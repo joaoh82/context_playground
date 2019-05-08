@@ -27,10 +27,14 @@ func main() {
 	// so code should call cancel as soon as the operations running in this
 	// That is why we have the defer cancel() at the end, because even with the timeout set, we need to call cancel()
 	// Also this code does basically the same the snippets above
-	ctx, cancel := context.WithTimeout(ctx, time.Second)
+	ctx, cancel = context.WithTimeout(ctx, time.Second)
 	defer cancel()
 
-	// sleepAndTalk(ctx, 5*time.Second, "hello")
+	// passing the contecxt to another function
+	// here we see that even passing 5 seconds to the function to print the message
+	// once the context gets canceled above, after 1 second
+	// it propagates and cancels everything
+	sleepAndTalk(ctx, 5*time.Second, "hello")
 }
 
 func sleepAndTalk(ctx context.Context, wait time.Duration, message string) {
